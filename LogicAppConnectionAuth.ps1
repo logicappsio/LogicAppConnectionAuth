@@ -32,7 +32,7 @@ Login-AzureRmAccount
 
 #select the subscription
 
-$subscription = Get-AzureRmSubscription -SubscriptionId $subscriptionId
+$subscription = Select-AzureRmSubscription -SubscriptionId $subscriptionId
 
 #if the connection wasn't alrady created via a deployment
 if($createConnection)
