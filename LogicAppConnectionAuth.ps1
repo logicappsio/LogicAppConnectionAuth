@@ -3,8 +3,8 @@
 Param(
     [string] $ResourceGroupName = 'YourRG',
     [string] $ResourceLocation = 'eastus | westus | etc.',
-    [string] $api = 'office365 | dropbox | dynamicscrm | etc.',
-	[string] $ConnectionName = 'YourConnectionName',
+    [string] $api = 'office365 | dropbox | dynamicscrmonline | etc.',
+    [string] $ConnectionName = 'YourConnectionName',
     [string] $subscriptionId = '80d4fe69-xxxx-xxxx-a938-9250f1c8ab03',
     [bool] $createConnection =  $false
 )
@@ -53,7 +53,7 @@ $parameters = @{
 	}
 }
 $parameters.parameters[0].Add("objectId", $objectid)
-$parameters.parameters[0].Add("tenantId", $subscription.TenantId)
+$parameters.parameters[0].Add("tenantId", $subscription.Tenant.TenantId)
 
 #get the links needed for consent
 $consentResponse = Invoke-AzureRmResourceAction -Action "listConsentLinks" -ResourceId $connection.ResourceId -Parameters $parameters -Force
@@ -71,7 +71,7 @@ if (-Not [string]::IsNullOrEmpty($code)) {
 	$parameters = @{ }
 	$parameters.Add("code", $code)
 	$parameters.Add("objectId", $objectid)
-	$parameters.Add("tenantId", $subscription.TenantId)
+	$parameters.Add("tenantId", $subscription.Tenant.TenantId)
 	# NOTE: errors ignored as this appears to error due to a null response
 
     #confirm the consent code
