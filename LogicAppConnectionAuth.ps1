@@ -1,13 +1,13 @@
 ﻿
 
 Param(
-    [string] $ResourceGroupName = 'YourRG',
-    [string] $ResourceLocation = 'eastus | westus | etc.',
-    [string] $api = 'office365 | dropbox | dynamicscrmonline | etc.',
-    [string] $ConnectionName = 'YourConnectionName',
-    [string] $subscriptionId = '80d4fe69-xxxx-xxxx-a938-9250f1c8ab03',
-    [string] $ADobjectId = '59b2c08b-xxxx-xxxx-840a-2d6d1e19fe8a',
-    [bool] $createConnection =  $false
+    [string] $ResourceGroupName = 'Premium',
+    [string] $ResourceLocation = 'eastus',
+    [string] $api = 'twitter',
+    [string] $ConnectionName = 'twittertest',
+    [string] $subscriptionId = '80d4fe69-c95b-4dd2-a938-9250f1c8ab03',
+ #   [string] $ADobjectId =  $null,
+    [bool] $createConnection =  $true
 )
  #region mini window, made by Scripting Guy Blog
     Function Show-OAuthWindow {
@@ -56,8 +56,8 @@ $parameters = @{
 	"redirectUrl"= "https://ema1.exp.azure.com/ema/default/authredirect"
 	}
 }
-$parameters.parameters[0].Add("objectId", $ADobjectid)
-$parameters.parameters[0].Add("tenantId", $subscription.Tenant.TenantId)
+# $parameters.parameters[0].Add("objectId", $null)
+# $parameters.parameters[0].Add("tenantId", $null)
 
 #get the links needed for consent
 $consentResponse = Invoke-AzureRmResourceAction -Action "listConsentLinks" -ResourceId $connection.ResourceId -Parameters $parameters -Force
@@ -73,9 +73,9 @@ $regex = '(code=)(.*)$'
 
 if (-Not [string]::IsNullOrEmpty($code)) {
 	$parameters = @{ }
-	$parameters.Add("code", $code)
-	$parameters.Add("objectId", $ADobjectid)
-	$parameters.Add("tenantId", $subscription.Tenant.TenantId)
+	$parameters.Add("code", $code)#
+#	$parameters.Add("objectId", $null)
+#	$parameters.Add("tenantId", $null)
 	# NOTE: errors ignored as this appears to error due to a null response
 
     #confirm the consent code
