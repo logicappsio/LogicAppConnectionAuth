@@ -7,7 +7,7 @@ Param(
     [string] $ConnectionName = 'YourConnectionName',
     [string] $subscriptionId = '80d4fe69-xxxx-xxxx-a938-9250f1c8ab03',
     [string] $ADobjectId = '59b2c08b-xxxx-xxxx-840a-2d6d1e19fe8a',
-    [bool] $createConnection =  $false
+    [bool] $createConnection =  $true
 )
  #region mini window, made by Scripting Guy Blog
     Function Show-OAuthWindow {
@@ -35,10 +35,6 @@ Login-AzureRmAccount
 
 $subscription = Select-AzureRmSubscription -SubscriptionId $subscriptionId
 
-#can try to automatically get objectId
-# $user = Get-AzureRmADUser -Mail 'myemail@foo.com'
-# $ADobjectId = $user.Id
-
 #if the connection wasn't alrady created via a deployment
 if($createConnection)
 {
@@ -56,8 +52,6 @@ $parameters = @{
 	"redirectUrl"= "https://ema1.exp.azure.com/ema/default/authredirect"
 	}
 }
-$parameters.parameters[0].Add("objectId", $ADobjectid)
-$parameters.parameters[0].Add("tenantId", $subscription.Tenant.TenantId)
 
 #get the links needed for consent
 $consentResponse = Invoke-AzureRmResourceAction -Action "listConsentLinks" -ResourceId $connection.ResourceId -Parameters $parameters -Force
@@ -74,8 +68,6 @@ $regex = '(code=)(.*)$'
 if (-Not [string]::IsNullOrEmpty($code)) {
 	$parameters = @{ }
 	$parameters.Add("code", $code)
-	$parameters.Add("objectId", $ADobjectid)
-	$parameters.Add("tenantId", $subscription.Tenant.TenantId)
 	# NOTE: errors ignored as this appears to error due to a null response
 
     #confirm the consent code
