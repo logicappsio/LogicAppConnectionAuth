@@ -6,7 +6,6 @@ Param(
     [string] $api = 'office365 | dropbox | dynamicscrmonline | etc.',
     [string] $ConnectionName = 'YourConnectionName',
     [string] $subscriptionId = '80d4fe69-xxxx-xxxx-a938-9250f1c8ab03',
-    [string] $ADobjectId = '59b2c08b-xxxx-xxxx-840a-2d6d1e19fe8a',
     [bool] $createConnection =  $true
 )
  #region mini window, made by Scripting Guy Blog
